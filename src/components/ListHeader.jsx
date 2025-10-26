@@ -1,17 +1,18 @@
-function ListHeader({ name, onEdit, onDelete, onArchive, userRole }) {
+function ListHeader({ name, isOwner, onBack, onEdit, onDelete, onArchive }) {
   return (
-    <header>
+    <div>
+      <button onClick={onBack}>Back</button>
+
       <h1>{name}</h1>
-      <div>
-        {userRole === "owner" && (
-          <>
-            <button onClick={onEdit}>Upravit název</button>
-            <button onClick={onArchive}>Archivovat</button>
-            <button onClick={onDelete}>Smazat</button>
-          </>
-        )}
-      </div>
-    </header>
+
+      {isOwner && (
+        <div>
+          <button onClick={onEdit}>Edit</button>
+          <button onClick={onDelete}>Delete</button>
+          <button onClick={onArchive}>Archive</button>
+        </div>
+      )}
+    </div>
   );
 }
 
