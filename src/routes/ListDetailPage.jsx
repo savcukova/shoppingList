@@ -1,59 +1,28 @@
 import React, { useState } from "react";
-import ItemList from "../components/ItemList.jsx";
-import AddNewForm from "../components/AddNewForm.jsx";
+import { INITIAL_SHOPPING_LIST } from "../mockData.js";
 
-const initialList = {
-  name: "Nákupní seznam",
-  items: [
-    { id: 1, name: "Mléko", done: false },
-    { id: 2, name: "Chléb", done: true },
-    { id: 3, name: "Vejce", done: false },
-  ],
-};
+// components
+import ListHeader from "../components/ListHeader.jsx";
+import EditListForm from "../components/EditListForm.jsx";
+import AddNewForm from "../components/AddNewForm.jsx";
+import ListTabs from "../components/ListTabs.jsx";
+import ItemList from "../components/ItemList.jsx";
+import ConfirmationDialog from "../components/ConfirmationDialog.jsx";
 
 function ListDetailPage() {
-  const [list, setList] = useState(initialList);
+  const [list, setList] = useState(INITIAL_SHOPPING_LIST);
+  const [isOwner] = useState(list.owner_id === CURRENT_USER_ID);
 
-  const handleCheck = (id) => {
-    setList({
-      ...list,
-      items: list.items.map((item) =>
-        item.id === id ? { ...item, done: !item.done } : item
-      ),
-    });
-  };
-
-  const handleDelete = (id) => {
-    setList({
-      ...list,
-      items: list.items.filter((item) => item.id !== id),
-    });
-  };
-
-  const handleAdd = (name) => {
-    const newItem = {
-      id: Date.now(),
-      name,
-      done: false,
-    };
-    setList({
-      ...list,
-      items: [...list.items, newItem],
-    });
-  };
-
-  const handleCancel = () => {
-    console.log("Přidávání zrušeno");
-  };
   return (
-    <>
-      <ItemList
-        items={list.items}
-        onCheck={handleCheck}
-        onDelete={handleDelete}
-      />
-      <AddNewForm onAdd={handleAdd} onCancel={handleCancel} />
-    </>
+    <div>
+      <div>
+        <ListHeader />
+        <AddNewForm />
+        <ListTabs />
+        <ItemList />
+      </div>
+      <ConfirmationDialog />
+    </div>
   );
 }
 

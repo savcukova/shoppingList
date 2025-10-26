@@ -14,6 +14,7 @@ function AddNewForm({
     onAdd(value.trim());
     setValue("");
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="item">{inputLabel}</label>
