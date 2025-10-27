@@ -45,7 +45,16 @@ function ListDetailPage() {
           onDeleteItem={() => console.log("Delete item")}
         />
       </div>
-      <ConfirmationDialog />
+      <ConfirmationDialog
+        open={true}
+        actionType="archive"
+        onConfirm={() => {
+          console.log("confirmed");
+        }}
+        onCancel={() => {
+          console.log("cancelled");
+        }}
+      />
     </div>
   );
 }
