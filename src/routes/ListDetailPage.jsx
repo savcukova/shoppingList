@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { INITIAL_SHOPPING_LIST, CURRENT_USER_ID } from "../mockData.js";
 
 // components
@@ -24,7 +24,7 @@ function ListDetailPage() {
   const [activeTab, setActiveTab] = useState("incomplete");
   const [dialog, setDialog] = useState({ open: false, actionType: null });
 
-  // handlers
+  // handlers for editing list
   const handleEditListName = () => {
     setListNameValue(list.name);
     setIsEditingName(true);
@@ -35,15 +35,102 @@ function ListDetailPage() {
     setIsEditingName(false);
   };
 
+  const handleCancelEdit = () => {
+    setIsEditingName(false);
+  };
+
+  // handlers for showing dialog
+  const handleShowDialog = (actionType) => {
+    setDialog({ open: true, actionType: actionType });
+  };
+
+  const handleCloseDialog = () => {
+    setDialog({ open: false, actionType: null });
+  };
+
+  // handlers for adding item
+  const handleAddItem = () => {
+    if (!newItemValue.trim()) return;
+
+    const newItem = {
+      id: `item-${Date.now()}`,
+      name: newItemValue,
+      completed: false,
+    };
+
+    setList((prevList) => ({
+      ...prevList,
+      items: [...prevList.items, newItem],
+    }));
+
+    setIsAddingItem(false);
+    setNewItemValue("");
+  };
+
+  const handleCancelAddItem = () => {
+    setIsAddingItem(false);
+  };
+
+  const handleShowAddForm = () => {
+    setIsAddingItem(true);
+  };
+
+  // handlers for check/delete
+  const handleToggleItem = (itemId) => {
+    setList((prevList) => ({
+      ...prevList,
+      items: prevList.items.map((item) =>
+        item.id === itemId ? { ...item, completed: !item.completed } : item
+      ),
+    }));
+  };
+
+  const handleDeleteItem = (itemId) => {
+    setList((prevList) => ({
+      ...prevList,
+      items: prevList.items.filter((item) => item.id !== itemId),
+    }));
+  };
+
+  const handleConfirmDialog = () => {
+    if (dialog.actionType === "delete") {
+      alert(`Delete list ${list.name}`);
+    } else if (dialog.actionType === "archive") {
+      alert(`Archive list ${list.name}`);
+      setList((prevList) => ({ ...prevList, is_archived: true }));
+    }
+
+    handleCloseDialog();
+  };
+
+  const filteredItems = useMemo(() => {
+    if (activeTab === "all") {
+      return list.items;
+    }
+
+    return list.items.filter((item) => !item.completed);
+  }, [list.items, activeTab]);
+
   if (isEditingName) {
     return (
       <EditListForm
         value={listNameValue}
         onChange={(e) => setListNameValue(e.target.value)}
         onSave={() => handleSaveName()}
-        onCancel={() => setIsEditingName(false)}
+        onCancel={() => handleCancelEdit()}
         isOwner={isOwner}
         onMembers={() => console.log("Manage other members")}
+      />
+    );
+  }
+
+  if (isAddingItem) {
+    return (
+      <AddNewForm
+        value={newItemValue}
+        onChange={(e) => setNewItemValue(e.target.value)}
+        onAdd={handleAddItem}
+        onCancel={handleCancelAddItem}
       />
     );
   }
@@ -56,39 +143,30 @@ function ListDetailPage() {
           isOwner={isOwner}
           onBack={() => console.log("Back to all shopping lists")}
           onEdit={handleEditListName}
-          onDelete={() => console.log("Delete")}
-          onArchive={() => console.log("Archive")}
+          onDelete={() => handleShowDialog("delete")}
+          onArchive={() => handleShowDialog("archive")}
         />
-        <AddNewForm
-          value={"value"}
-          onChange={() => {
-            console.log("Changed value");
-          }}
-          onAdd={() => console.log("Add new")}
-          onCancel={() => console.log("Cancel")}
-        />
-        <ListTabs
-          activeTab={"incomplete"}
-          onTabChange={() => {
-            console.log("Changed tab");
-          }}
-        />
+
+        {list.items.length > 0 && (
+          <ListTabs activeTab={activeTab} onTabChange={setActiveTab} />
+        )}
+
         <ItemList
-          items={list.items}
-          onCheck={() => console.log("Check item")}
-          onDeleteItem={() => console.log("Delete item")}
+          items={filteredItems}
+          onCheck={handleToggleItem}
+          onDeleteItem={handleDeleteItem}
         />
-        <AddNewItemBtn onClick={() => console.log("klik")} />
+
+        <AddNewItemBtn onClick={handleShowAddForm} />
       </div>
+
       <ConfirmationDialog
-        open={true}
-        actionType="archive"
+        open={dialog.open}
+        actionType={dialog.actionType}
         onConfirm={() => {
-          console.log("confirmed");
+          handleConfirmDialog();
         }}
-        onCancel={() => {
-          console.log("cancelled");
-        }}
+        onCancel={() => handleCloseDialog()}
       />
     </div>
   );

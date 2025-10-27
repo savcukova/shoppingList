@@ -5,24 +5,21 @@ function ItemList({ items, onCheck, onDeleteItem }) {
     return (
       <div>
         <p>No items</p>
-        <button>Add new</button>
       </div>
     );
   }
 
   return (
-    <>
-      <ul>
-        {items.map((item) => (
-          <Item
-            key={item.id}
-            item={item}
-            onCheck={() => onCheck(item.id)}
-            onDelete={() => onDeleteItem(item.id)}
-          />
-        ))}
-      </ul>
-    </>
+    <ul>
+      {items.map((item) => (
+        <Item
+          key={item.id}
+          item={item}
+          onCheck={() => onCheck(item.id)}
+          onDelete={() => onDeleteItem(item.id)}
+        />
+      ))}
+    </ul>
   );
 }
 
