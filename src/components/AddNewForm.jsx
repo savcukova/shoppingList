@@ -1,35 +1,25 @@
-import { useState } from "react";
-
-function AddNewForm({
-  onAdd,
-  onCancel,
-  inputType = "text",
-  inputLabel = "Item name",
-}) {
-  const [value, setValue] = useState("");
-
+function AddNewForm({ value, onChange, onAdd, onCancel }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (value.trim() === "") return;
-    onAdd(value.trim());
-    setValue("");
+    onAdd();
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="item">{inputLabel}</label>
-      <input
-        id="item"
-        type={inputType}
-        value={value}
-        onChange={(e) => setValue(e.target.value.trim())}
-      />
+    <>
+      <div>
+        <p>Add new</p>
+      </div>
 
-      <button type="submit">Add</button>
-      <button type="button" onClick={onCancel}>
-        Cancel
-      </button>
-    </form>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="itemName">Item name</label>
+        <input type="text" id="itemName" value={value} onChange={onChange} />
+
+        <button type="submit">Add</button>
+        <button type="button" onClick={onCancel}>
+          Cancel
+        </button>
+      </form>
+    </>
   );
 }
 

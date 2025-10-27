@@ -1,4 +1,3 @@
-// formular k editování seznamu
 function EditListForm({
   value,
   onChange,
