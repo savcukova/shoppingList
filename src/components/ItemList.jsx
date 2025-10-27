@@ -1,7 +1,29 @@
 import Item from "./Item.jsx";
 
-function ItemList() {
-  return <div></div>;
+function ItemList({ items, onCheck, onDeleteItem }) {
+  if (items.length === 0) {
+    return (
+      <div>
+        <p>No items</p>
+        <button>Add new</button>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <ul>
+        {items.map((item) => (
+          <Item
+            key={item.id}
+            item={item}
+            onCheck={() => onCheck(item.id)}
+            onDelete={() => onDeleteItem(item.id)}
+          />
+        ))}
+      </ul>
+    </>
+  );
 }
 
 export default ItemList;

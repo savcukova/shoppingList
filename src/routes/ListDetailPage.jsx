@@ -17,10 +17,33 @@ function ListDetailPage() {
   return (
     <div>
       <div>
-        <ListHeader name={list.name} isOwner={isOwner} />
-        <AddNewForm />
-        <ListTabs />
-        <ItemList />
+        <ListHeader
+          name={list.name}
+          isOwner={isOwner}
+          onBack={() => console.log("Back")}
+          onEdit={() => console.log("Edit")}
+          onDelete={() => console.log("Delete")}
+          onArchive={() => console.log("Archive")}
+        />
+        <AddNewForm
+          value={"value"}
+          onChange={() => {
+            console.log("Changed value");
+          }}
+          onAdd={() => console.log("Add new")}
+          onCancel={() => console.log("Cancel")}
+        />
+        <ListTabs
+          activeTab={"incomplete"}
+          onTabChange={() => {
+            console.log("Changed tab");
+          }}
+        />
+        <ItemList
+          items={list.items}
+          onCheck={() => console.log("Check item")}
+          onDeleteItem={() => console.log("Delete item")}
+        />
       </div>
       <ConfirmationDialog />
     </div>
