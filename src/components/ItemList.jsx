@@ -1,18 +1,7 @@
 import Item from "./Item.jsx";
 
-function ItemList({ items, onCheck, onDeleteItem }) {
-  return (
-    <ul>
-      {items.map((item) => (
-        <Item
-          key={item.id}
-          item={item}
-          onCheck={onCheck}
-          onDelete={onDeleteItem}
-        />
-      ))}
-    </ul>
-  );
+function ItemList() {
+  return <div></div>;
 }
 
 export default ItemList;
