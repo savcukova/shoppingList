@@ -8,11 +8,45 @@ import AddNewForm from "../components/AddNewForm.jsx";
 import ListTabs from "../components/ListTabs.jsx";
 import ItemList from "../components/ItemList.jsx";
 import ConfirmationDialog from "../components/ConfirmationDialog.jsx";
+import AddNewItemBtn from "../components/AddNewItemBtn.jsx";
 
 function ListDetailPage() {
+  // states
   const [list, setList] = useState(INITIAL_SHOPPING_LIST);
   const [isOwner] = useState(list.owner_id === CURRENT_USER_ID);
+
   const [isEditingName, setIsEditingName] = useState(false);
+  const [isAddingItem, setIsAddingItem] = useState(false);
+
+  const [listNameValue, setListNameValue] = useState(list.name);
+  const [newItemValue, setNewItemValue] = useState("");
+
+  const [activeTab, setActiveTab] = useState("incomplete");
+  const [dialog, setDialog] = useState({ open: false, actionType: null });
+
+  // handlers
+  const handleEditListName = () => {
+    setListNameValue(list.name);
+    setIsEditingName(true);
+  };
+
+  const handleSaveName = () => {
+    setList({ ...list, name: listNameValue });
+    setIsEditingName(false);
+  };
+
+  if (isEditingName) {
+    return (
+      <EditListForm
+        value={listNameValue}
+        onChange={(e) => setListNameValue(e.target.value)}
+        onSave={() => handleSaveName()}
+        onCancel={() => setIsEditingName(false)}
+        isOwner={isOwner}
+        onMembers={() => console.log("Manage other members")}
+      />
+    );
+  }
 
   return (
     <div>
@@ -20,8 +54,8 @@ function ListDetailPage() {
         <ListHeader
           name={list.name}
           isOwner={isOwner}
-          onBack={() => console.log("Back")}
-          onEdit={() => console.log("Edit")}
+          onBack={() => console.log("Back to all shopping lists")}
+          onEdit={handleEditListName}
           onDelete={() => console.log("Delete")}
           onArchive={() => console.log("Archive")}
         />
@@ -44,6 +78,7 @@ function ListDetailPage() {
           onCheck={() => console.log("Check item")}
           onDeleteItem={() => console.log("Delete item")}
         />
+        <AddNewItemBtn onClick={() => console.log("klik")} />
       </div>
       <ConfirmationDialog
         open={true}
