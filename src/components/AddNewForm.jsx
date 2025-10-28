@@ -5,30 +5,36 @@ function AddNewForm({ value, onChange, onAdd, onCancel }) {
   };
 
   return (
-    <>
-      <div>
-        <p>Add new</p>
-      </div>
+    <div className="p-4 space-y-6">
+      <p className="text-2xl font-bold">Add new</p>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="itemName">Item name</label>
-        <input type="text" id="itemName" value={value} onChange={onChange} />
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="form-control w-full">
+          <input
+            type="text"
+            id="itemName"
+            value={value}
+            onChange={onChange}
+            className="input input-bordered w-full"
+            placeholder="Item name"
+          />
+        </div>
 
-        <button
-          type="submit"
-          className="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl"
-        >
-          Add
-        </button>
-        <button
-          type="button"
-          className="btn btn-neutral btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl"
-          onClick={onCancel}
-        >
-          Cancel
-        </button>
+        <div className="pt-2 space-y-2">
+          <button type="submit" className="btn btn-primary btn-md w-full">
+            Add
+          </button>
+
+          <button
+            type="button"
+            className="btn bg-base-200 btn-md w-full"
+            onClick={onCancel}
+          >
+            Cancel
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 }
 
