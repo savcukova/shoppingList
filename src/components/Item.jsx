@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import {
-  faCheckSquare,
-  faSquare,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
+  faSquare as farSquare,
+  faSquareCheck,
+  faTrashCan,
+} from "@fortawesome/free-regular-svg-icons";
 
 function Item({ item, onCheck, onDelete }) {
   return (
@@ -11,11 +12,11 @@ function Item({ item, onCheck, onDelete }) {
       <span>{item.name}</span>
 
       <div onClick={() => onCheck(item.id)}>
-        <FontAwesomeIcon icon={item.done ? faCheckSquare : faSquare} />
+        <FontAwesomeIcon icon={item.done ? faSquareCheck : farSquare} />
       </div>
 
       <div onClick={() => onDelete(item.id)}>
-        <FontAwesomeIcon icon={faTrash} />
+        <FontAwesomeIcon icon={faTrashCan} />
       </div>
     </li>
   );
