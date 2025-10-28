@@ -136,7 +136,7 @@ function ListDetailPage() {
   }
 
   return (
-    <div className="flex-col space-y-4">
+    <div className="flex-col space-y-4 px-6">
       <div>
         <ListHeader
           name={list.name}
@@ -157,7 +157,7 @@ function ListDetailPage() {
           onDeleteItem={handleDeleteItem}
         />
 
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-6">
           <AddNewItemBtn onClick={handleShowAddForm} />
         </div>
       </div>
