@@ -157,7 +157,9 @@ function ListDetailPage() {
           onDeleteItem={handleDeleteItem}
         />
 
-        <AddNewItemBtn onClick={handleShowAddForm} />
+        <div className="flex justify-center mt-4">
+          <AddNewItemBtn onClick={handleShowAddForm} />
+        </div>
       </div>
 
       <ConfirmationDialog

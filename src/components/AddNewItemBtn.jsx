@@ -1,7 +1,8 @@
 function AddNewItemButton({ onClick }) {
   return (
     <button
-      className="btn btn-primary btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl"
+      className="
+      btn btn-primary btn-md"
       onClick={onClick}
     >
       +Add new
