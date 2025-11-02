@@ -22,7 +22,7 @@ function ConfirmationDialog({
       case "remove":
         return {
           title: customTitle || "Delete user?",
-          confirmText: "Delete",
+          confirmText: customTitle?.includes("Leave") ? "Leave" : "Delete",
           confirmButtonClass: "btn-error",
         };
       default:

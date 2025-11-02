@@ -17,7 +17,6 @@ export function AuthProvider({ children }) {
       return false;
     }
 
-    // Převod user_id na id pro konzistenci
     const user = {
       id: foundUser.user_id,
       email: foundUser.email,

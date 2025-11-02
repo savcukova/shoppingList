@@ -24,6 +24,7 @@ function ListDetailPage() {
     handleDeleteItem,
     handleArchiveList,
     handleDeleteList,
+    handleRemoveMember,
   } = useShoppingLists();
 
   const { currentUser } = useAuth();
@@ -58,6 +59,7 @@ function ListDetailPage() {
 
   const [activeTab, setActiveTab] = useState("incomplete");
   const [dialog, setDialog] = useState({ open: false, actionType: null });
+  const [leaveDialog, setLeaveDialog] = useState({ open: false });
 
   useEffect(() => {
     if (list) {
@@ -143,6 +145,23 @@ function ListDetailPage() {
     handleCloseDialog();
   };
 
+  const handleShowLeaveDialog = () => {
+    setLeaveDialog({ open: true });
+  };
+
+  const handleCloseLeaveDialog = () => {
+    setLeaveDialog({ open: false });
+  };
+
+  const handleConfirmLeave = () => {
+    if (currentUser) {
+      handleRemoveMember(listId, currentUser.id);
+      handleCloseLeaveDialog();
+      // Navigate to home page after leaving
+      navigate("/");
+    }
+  };
+
   if (isEditingName) {
     return (
       <EditListForm
@@ -173,10 +192,13 @@ function ListDetailPage() {
         <ListHeader
           name={list.name}
           isOwner={canManageList}
-          onBack={() => console.log("Back to all shopping lists")}
+          onBack={null}
           onEdit={canManageList ? handleEditListName : null}
           onDelete={canManageList ? () => handleShowDialog("delete") : null}
           onArchive={canManageList ? () => handleShowDialog("archive") : null}
+          onLeave={
+            !isOwner && userRole === "member" ? handleShowLeaveDialog : null
+          }
         />
 
         {list.items.length > 0 && (
@@ -205,6 +227,14 @@ function ListDetailPage() {
         actionType={dialog.actionType}
         onConfirm={handleConfirmDialog}
         onCancel={handleCloseDialog}
+      />
+
+      <ConfirmationDialog
+        open={leaveDialog.open}
+        actionType="remove"
+        title="Leave this list?"
+        onConfirm={handleConfirmLeave}
+        onCancel={handleCloseLeaveDialog}
       />
     </div>
   );
