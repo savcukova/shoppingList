@@ -42,12 +42,12 @@ function ListDetailPage() {
 
   // Práva v aplikaci:
   // OWNER může: editovat název, smazat/archivovat list, smazat itemy, přidávat/smazat členy
-  // MEMBER může: přidávat itemy, checknout itemy, smazat sebe ze seznamu
+  // MEMBER může: přidávat itemy, checknout itemy, smazat itemy, smazat sebe ze seznamu
   const isOwner = userRole === "owner";
-  const canManageList = isOwner; // editovat název, smazat/archivovat, smazat itemy
+  const canManageList = isOwner; // editovat název, smazat/archivovat seznam
   const canAddItem = isOwner || userRole === "member"; // přidávat itemy
   const canCheckItem = isOwner || userRole === "member"; // checknout itemy
-  const canDeleteItem = isOwner; // smazat itemy - jen owner
+  const canDeleteItem = isOwner || userRole === "member"; // smazat itemy - owner i member
   const canView = isOwner || userRole === "member"; // zobrazit list
 
   const [isEditingName, setIsEditingName] = useState(false);

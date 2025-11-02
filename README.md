@@ -4,7 +4,7 @@ Aplikace pro správu nákupních seznamů s možností sdílení mezi uživateli
 
 ## Přihlášení
 
-Aplikace má dva testovací účty pro přihlášení:
+Aplikace má několik testovacích účtů pro přihlášení:
 
 ### Owner účet (Vlastník seznamu)
 
@@ -22,9 +22,21 @@ Aplikace má dva testovací účty pro přihlášení:
 - ✅ Checknout/odchecknout itemy
 - ✅ Zobrazit seznam
 
-### Member účet (Člen seznamu)
+### Member účty (Členové seznamu)
+
+**Účet 1:**
 
 - **Email:** `member@example.com`
+- **Password:** `password`
+
+**Účet 2:**
+
+- **Email:** `petr.svoboda@example.com`
+- **Password:** `password`
+
+**Účet 3:**
+
+- **Email:** `marie.dvorakova@example.com`
 - **Password:** `password`
 
 **Práva Member:**

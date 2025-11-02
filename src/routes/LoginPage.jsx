@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext.jsx";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
   const { login } = useAuth();
 
   const handleSubmit = (e) => {
@@ -14,7 +15,11 @@ function LoginPage() {
       alert("Please enter both email and password.");
       return;
     }
-    login(email, password);
+
+    const success = login(email, password);
+    if (success) {
+      navigate("/shopping-lists/a44bbf9b8bc39g632f53c245");
+    }
   };
 
   return (

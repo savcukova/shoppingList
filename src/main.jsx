@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { ShoppingListsProvider } from "./contexts/ShoppingListsContext.jsx";
+import { AuthProvider } from "./contexts/AuthContext.jsx";
 
 import "./main.css";
 import App from "./App.jsx";
@@ -41,8 +42,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ShoppingListsProvider>
-      <RouterProvider router={router} />
-    </ShoppingListsProvider>
+    <AuthProvider>
+      <ShoppingListsProvider>
+        <RouterProvider router={router} />
+      </ShoppingListsProvider>
+    </AuthProvider>
   </StrictMode>
 );

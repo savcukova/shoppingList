@@ -2,13 +2,25 @@ export const MOCK_USERS = [
   {
     user_id: "672def8a7ab28f521e42a123",
     email: "owner@example.com",
-    name: "Jan Novak (Owner)",
+    name: "Jan Novak",
     password: "password",
   },
   {
-    user_id: "b89cde0c8cd49h743h64d356",
+    user_id: "b89cde0c8cd49h743g64d356",
     email: "member@example.com",
-    name: "Jana Nova (Member)",
+    name: "Jana Nova",
+    password: "password",
+  },
+  {
+    user_id: "c34fed1b9de50i854i75e467",
+    email: "petr.svoboda@example.com",
+    name: "Petr Svoboda",
+    password: "password",
+  },
+  {
+    user_id: "d45gfe2c0ef61j965j86f578",
+    email: "marie.dvorakova@example.com",
+    name: "Marie Dvořáková",
     password: "password",
   },
 ];
@@ -25,16 +37,30 @@ export const INITIAL_SHOPPING_LISTS = [
       {
         user_id: "672def8a7ab28f521e42a123",
         name: "Jan Novak",
-        email: "jan.novak@example.com",
+        email: "owner@example.com",
         role: "owner",
         joined_at: "2025-10-26T15:00:00Z",
       },
       {
         user_id: "b89cde0c8cd49h743g64d356",
         name: "Jana Nova",
-        email: "jana.nova@example.com",
+        email: "member@example.com",
         role: "member",
         joined_at: "2025-10-26T15:01:00Z",
+      },
+      {
+        user_id: "c34fed1b9de50i854i75e467",
+        name: "Petr Svoboda",
+        email: "petr.svoboda@example.com",
+        role: "member",
+        joined_at: "2025-10-26T15:05:00Z",
+      },
+      {
+        user_id: "d45gfe2c0ef61j965j86f578",
+        name: "Marie Dvořáková",
+        email: "marie.dvorakova@example.com",
+        role: "member",
+        joined_at: "2025-10-26T15:06:00Z",
       },
     ],
     items: [
@@ -91,9 +117,23 @@ export const INITIAL_SHOPPING_LISTS = [
       {
         user_id: "672def8a7ab28f521e42a123",
         name: "Jan Novak",
-        email: "jan.novak@example.com",
+        email: "owner@example.com",
         role: "owner",
         joined_at: "2025-10-27T10:00:00Z",
+      },
+      {
+        user_id: "b89cde0c8cd49h743g64d356",
+        name: "Jana Nova",
+        email: "member@example.com",
+        role: "member",
+        joined_at: "2025-10-27T10:10:00Z",
+      },
+      {
+        user_id: "c34fed1b9de50i854i75e467",
+        name: "Petr Svoboda",
+        email: "petr.svoboda@example.com",
+        role: "member",
+        joined_at: "2025-10-27T10:15:00Z",
       },
     ],
     items: [

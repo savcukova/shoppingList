@@ -15,8 +15,8 @@ function ItemList({ items, onCheck, onDeleteItem }) {
         <Item
           key={item._id}
           item={item}
-          onCheck={() => onCheck(item._id)}
-          onDelete={() => onDeleteItem(item._id)}
+          onCheck={onCheck ? () => onCheck(item._id) : null}
+          onDelete={onDeleteItem ? () => onDeleteItem(item._id) : null}
         />
       ))}
     </ul>

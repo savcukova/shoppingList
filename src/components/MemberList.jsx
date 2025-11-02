@@ -1,19 +1,24 @@
 import Member from "./Member.jsx";
 
 function MemberList({ members, onRemoveMember, isOwner, currentUserId }) {
-  const otherUsers = members.filter((member) => member.role !== "owner");
+  // Owner vidí všechny členy včetně sebe, Member vidí jen "other users" (ne ownery)
+  const displayedMembers = isOwner
+    ? members
+    : members.filter((member) => member.role !== "owner");
 
-  if (otherUsers.length === 0) {
+  if (displayedMembers.length === 0) {
     return (
       <div className="text-center py-10">
-        <p className="text-gray-500 mb-4">No other users</p>
+        <p className="text-gray-500 mb-4">
+          {isOwner ? "No members" : "No other users"}
+        </p>
       </div>
     );
   }
 
   return (
     <ul>
-      {otherUsers.map((member) => (
+      {displayedMembers.map((member) => (
         <Member
           key={member.user_id}
           member={member}
