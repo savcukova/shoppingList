@@ -1,8 +1,11 @@
-import ListDetailPage from "./routes/ListDetailPage";
-import MembersPage from "./routes/MembersPage";
+import { Outlet } from "react-router-dom";
 
 function App() {
-  return <MembersPage />;
+  return (
+    <main>
+      <Outlet />
+    </main>
+  );
 }
 
 export default App;

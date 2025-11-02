@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 
+import { useNavigate } from "react-router-dom";
 import { useShoppingLists } from "../contexts/ShoppingListsContext.jsx";
 
 // components
@@ -12,6 +13,8 @@ import ConfirmationDialog from "../components/ConfirmationDialog.jsx";
 import AddNewItemBtn from "../components/AddNewItemBtn.jsx";
 
 function ListDetailPage() {
+  const navigate = useNavigate();
+
   const {
     lists,
     CURRENT_USER_ID,
@@ -127,7 +130,7 @@ function ListDetailPage() {
         onSave={onSave}
         onCancel={handleCancelEdit}
         isOwner={isOwner}
-        onMembers={() => console.log("Manage other members")}
+        onMembers={() => navigate(`/shopping-lists/${listId}/members`)}
       />
     );
   }

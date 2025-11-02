@@ -1,6 +1,8 @@
 import { useState, useMemo } from "react";
 import { useShoppingLists } from "../contexts/ShoppingListsContext.jsx";
 
+import { useNavigate } from "react-router-dom";
+
 import ListHeader from "../components/ListHeader.jsx";
 import MemberList from "../components/MemberList.jsx";
 import AddNewMemberBtn from "../components/AddNewMemberBtn.jsx";
@@ -8,6 +10,7 @@ import AddNewMemberForm from "../components/AddNewMemberForm.jsx";
 import ConfirmationDialog from "../components/ConfirmationDialog.jsx";
 
 function MembersPage() {
+  const navigate = useNavigate();
   const { lists, CURRENT_USER_ID, handleAddMember, handleRemoveMember } =
     useShoppingLists();
 
@@ -77,7 +80,7 @@ function MembersPage() {
       <div>
         <ListHeader
           name="List users"
-          onBack={() => console.log("Back to list detail")}
+          onBack={() => navigate(-1)}
           isOwner={false}
         />
 
