@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from "react";
-import { INITIAL_SHOPPING_LIST, CURRENT_USER_ID } from "../mockData.js";
+import React, { useState, useMemo, useEffect } from "react";
+
+import { useShoppingLists } from "../contexts/ShoppingListsContext.jsx";
 
 // components
 import ListHeader from "../components/ListHeader.jsx";
@@ -11,18 +12,59 @@ import ConfirmationDialog from "../components/ConfirmationDialog.jsx";
 import AddNewItemBtn from "../components/AddNewItemBtn.jsx";
 
 function ListDetailPage() {
-  // states
-  const [list, setList] = useState(INITIAL_SHOPPING_LIST);
-  const [isOwner] = useState(list.owner_id === CURRENT_USER_ID);
+  const {
+    lists,
+    CURRENT_USER_ID,
+    handleSaveName,
+    handleAddItem,
+    handleToggleItem,
+    handleDeleteItem,
+    handleArchiveList,
+    handleDeleteList,
+  } = useShoppingLists();
+
+  const listId = "a44bbf9b8bc39g632f53c245";
+  const list = useMemo(
+    () => lists.find((list) => list._id === listId),
+    [lists, listId]
+  );
 
   const [isEditingName, setIsEditingName] = useState(false);
   const [isAddingItem, setIsAddingItem] = useState(false);
 
-  const [listNameValue, setListNameValue] = useState(list.name);
+  const [listNameValue, setListNameValue] = useState("");
   const [newItemValue, setNewItemValue] = useState("");
+
+  const isOwner = useMemo(
+    () => (list ? list.owner_id === CURRENT_USER_ID : false),
+    [list, CURRENT_USER_ID]
+  );
+
+  useEffect(() => {
+    if (list) {
+      setListNameValue(list.name || "");
+    }
+  }, [list]);
 
   const [activeTab, setActiveTab] = useState("incomplete");
   const [dialog, setDialog] = useState({ open: false, actionType: null });
+
+  const filteredItems = useMemo(() => {
+    if (!list) return [];
+    if (activeTab === "all") {
+      return list.items;
+    }
+
+    return list.items.filter((item) => !item.completed);
+  }, [list, activeTab]);
+
+  if (!list) {
+    return (
+      <div className="p-4 text-center">
+        <p>List not found</p>
+      </div>
+    );
+  }
 
   // handlers for editing list
   const handleEditListName = () => {
@@ -30,8 +72,8 @@ function ListDetailPage() {
     setIsEditingName(true);
   };
 
-  const handleSaveName = () => {
-    setList({ ...list, name: listNameValue });
+  const onSave = () => {
+    handleSaveName(listId, listNameValue);
     setIsEditingName(false);
   };
 
@@ -49,20 +91,10 @@ function ListDetailPage() {
   };
 
   // handlers for adding item
-  const handleAddItem = () => {
+  const onAdd = () => {
     if (!newItemValue.trim()) return;
 
-    const newItem = {
-      id: `item-${Date.now()}`,
-      name: newItemValue,
-      completed: false,
-    };
-
-    setList((prevList) => ({
-      ...prevList,
-      items: [...prevList.items, newItem],
-    }));
-
+    handleAddItem(listId, newItemValue);
     setIsAddingItem(false);
     setNewItemValue("");
   };
@@ -75,49 +107,25 @@ function ListDetailPage() {
     setIsAddingItem(true);
   };
 
-  // handlers for check/delete
-  const handleToggleItem = (itemId) => {
-    setList((prevList) => ({
-      ...prevList,
-      items: prevList.items.map((item) =>
-        item.id === itemId ? { ...item, completed: !item.completed } : item
-      ),
-    }));
-  };
-
-  const handleDeleteItem = (itemId) => {
-    setList((prevList) => ({
-      ...prevList,
-      items: prevList.items.filter((item) => item.id !== itemId),
-    }));
-  };
-
   const handleConfirmDialog = () => {
     if (dialog.actionType === "delete") {
       alert(`Delete list ${list.name}`);
+      handleDeleteList(listId);
     } else if (dialog.actionType === "archive") {
       alert(`Archive list ${list.name}`);
-      setList((prevList) => ({ ...prevList, is_archived: true }));
+      handleArchiveList(listId, true);
     }
 
     handleCloseDialog();
   };
-
-  const filteredItems = useMemo(() => {
-    if (activeTab === "all") {
-      return list.items;
-    }
-
-    return list.items.filter((item) => !item.completed);
-  }, [list.items, activeTab]);
 
   if (isEditingName) {
     return (
       <EditListForm
         value={listNameValue}
         onChange={(e) => setListNameValue(e.target.value)}
-        onSave={() => handleSaveName()}
-        onCancel={() => handleCancelEdit()}
+        onSave={onSave}
+        onCancel={handleCancelEdit}
         isOwner={isOwner}
         onMembers={() => console.log("Manage other members")}
       />
@@ -129,7 +137,7 @@ function ListDetailPage() {
       <AddNewForm
         value={newItemValue}
         onChange={(e) => setNewItemValue(e.target.value)}
-        onAdd={handleAddItem}
+        onAdd={onAdd}
         onCancel={handleCancelAddItem}
       />
     );
@@ -153,8 +161,8 @@ function ListDetailPage() {
 
         <ItemList
           items={filteredItems}
-          onCheck={handleToggleItem}
-          onDeleteItem={handleDeleteItem}
+          onCheck={(itemId) => handleToggleItem(listId, itemId)}
+          onDeleteItem={(itemId) => handleDeleteItem(listId, itemId)}
         />
 
         <div className="flex justify-center mt-6">
@@ -165,10 +173,8 @@ function ListDetailPage() {
       <ConfirmationDialog
         open={dialog.open}
         actionType={dialog.actionType}
-        onConfirm={() => {
-          handleConfirmDialog();
-        }}
-        onCancel={() => handleCloseDialog()}
+        onConfirm={handleConfirmDialog}
+        onCancel={handleCloseDialog}
       />
     </div>
   );

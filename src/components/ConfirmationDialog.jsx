@@ -1,8 +1,34 @@
 function ConfirmationDialog({ open, actionType, onConfirm, onCancel }) {
-  const title = actionType === "delete" ? "Delete list?" : "Archive list?";
-  const confirmText = actionType === "delete" ? "Delete" : "Archive";
-  const confirmButtonClass =
-    actionType === "delete" ? "btn-error" : "btn-primary";
+  const getDialogContent = () => {
+    switch (actionType) {
+      case "delete":
+        return {
+          title: "Delete list?",
+          confirmText: "Delete",
+          confirmButtonClass: "btn-error",
+        };
+      case "archive":
+        return {
+          title: "Archive list?",
+          confirmText: "Archive",
+          confirmButtonClass: "btn-primary",
+        };
+      case "remove":
+        return {
+          title: "Delete user?",
+          confirmText: "Delete",
+          confirmButtonClass: "btn-error",
+        };
+      default:
+        return {
+          title: "Confirm?",
+          confirmText: "Confirm",
+          confirmButtonClass: "btn-primary",
+        };
+    }
+  };
+
+  const { title, confirmText, confirmButtonClass } = getDialogContent();
 
   if (!open) {
     return null;
@@ -14,12 +40,31 @@ function ConfirmationDialog({ open, actionType, onConfirm, onCancel }) {
         <h3 className="font-bold text-lg text-center mb-4">{title}</h3>
 
         <div className="modal-action justify-center space-x-2">
-          <button onClick={onCancel} className="btn btn-ghost">
-            Cancel
-          </button>
-          <button onClick={onConfirm} className={`btn ${confirmButtonClass}`}>
-            {confirmText}
-          </button>
+          {actionType === "remove" ? (
+            <>
+              <button
+                onClick={onConfirm}
+                className={`btn ${confirmButtonClass}`}
+              >
+                {confirmText}
+              </button>
+              <button onClick={onCancel} className="btn btn-ghost">
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={onCancel} className="btn btn-ghost">
+                Cancel
+              </button>
+              <button
+                onClick={onConfirm}
+                className={`btn ${confirmButtonClass}`}
+              >
+                {confirmText}
+              </button>
+            </>
+          )}
         </div>
       </div>
 

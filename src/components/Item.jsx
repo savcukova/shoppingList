@@ -22,7 +22,7 @@ function Item({ item, onCheck, onDelete }) {
       <div className="flex items-center">
         <FontAwesomeIcon
           icon={checkIcon}
-          onClick={() => onCheck(item.id)}
+          onClick={() => onCheck(item._id)}
           className={`cursor-pointer text-lg mr-3 ${
             item.completed ? "text-success" : "text-gray-400"
           }`}
@@ -30,7 +30,7 @@ function Item({ item, onCheck, onDelete }) {
 
         <FontAwesomeIcon
           icon={faTrashCan}
-          onClick={() => onDelete(item.id)}
+          onClick={() => onDelete(item._id)}
           className="cursor-pointer text-lg text-error hover:text-error-focus"
         />
       </div>

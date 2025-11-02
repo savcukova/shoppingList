@@ -13,10 +13,10 @@ function ItemList({ items, onCheck, onDeleteItem }) {
     <ul>
       {items.map((item) => (
         <Item
-          key={item.id}
+          key={item._id}
           item={item}
-          onCheck={() => onCheck(item.id)}
-          onDelete={() => onDeleteItem(item.id)}
+          onCheck={() => onCheck(item._id)}
+          onDelete={() => onDeleteItem(item._id)}
         />
       ))}
     </ul>
