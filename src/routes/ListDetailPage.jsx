@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useShoppingLists } from "../contexts/ShoppingListsContext.jsx";
 
 // components
@@ -26,7 +26,7 @@ function ListDetailPage() {
     handleDeleteList,
   } = useShoppingLists();
 
-  const listId = "a44bbf9b8bc39g632f53c245";
+  const { listId } = useParams();
   const list = useMemo(
     () => lists.find((list) => list._id === listId),
     [lists, listId]

@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useShoppingLists } from "../contexts/ShoppingListsContext.jsx";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import ListHeader from "../components/ListHeader.jsx";
 import MemberList from "../components/MemberList.jsx";
@@ -14,10 +14,15 @@ function MembersPage() {
   const { lists, CURRENT_USER_ID, handleAddMember, handleRemoveMember } =
     useShoppingLists();
 
-  const listId = "a44bbf9b8bc39g632f53c245";
+  const { listId } = useParams();
   const list = useMemo(
     () => lists.find((list) => list._id === listId),
     [lists, listId]
+  );
+
+  const isOwner = useMemo(
+    () => (list ? list.owner_id === CURRENT_USER_ID : false),
+    [list, CURRENT_USER_ID]
   );
 
   const [isAdding, setIsAdding] = useState(false);
@@ -87,11 +92,15 @@ function MembersPage() {
         <MemberList
           members={list.members}
           onRemoveMember={onShowRemoveDialog}
+          isOwner={isOwner}
+          currentUserId={CURRENT_USER_ID}
         />
 
-        <div className="flex justify-center mt-6">
-          <AddNewMemberBtn onClick={() => setIsAdding(true)} />
-        </div>
+        {isOwner && (
+          <div className="flex justify-center mt-6">
+            <AddNewMemberBtn onClick={() => setIsAdding(true)} />
+          </div>
+        )}
       </div>
 
       <ConfirmationDialog
