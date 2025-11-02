@@ -1,19 +1,20 @@
-function MemberList({ members, onRemoveMember }) {
-  if (members.length === 0) {
-    return <p>No members</p>;
-  }
+import Member from "./Member.jsx";
 
-  if (members.length === 1 && members[0].role === "owner") {
+function MemberList({ members, onRemoveMember }) {
+  // Filtrujeme jen "other users" - vyloučíme ownery
+  const otherUsers = members.filter((member) => member.role !== "owner");
+
+  if (otherUsers.length === 0) {
     return (
       <div className="text-center py-10">
-        <p className="text-gray-500">No other users</p>
+        <p className="text-gray-500 mb-4">No other users</p>
       </div>
     );
   }
 
   return (
     <ul>
-      {members.map((member) => (
+      {otherUsers.map((member) => (
         <Member
           key={member.user_id}
           member={member}

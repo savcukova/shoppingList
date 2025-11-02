@@ -10,20 +10,20 @@ function Item({ item, onCheck, onDelete }) {
   const checkIcon = item.completed ? faSquareCheck : farSquare;
 
   return (
-    <li className="flex items-center justify-between bg-base-200 px-4 py-5 mx-3 rounded-lg mb-2">
+    <li className="flex items-center justify-between bg-base-200 px-3 sm:px-4 py-4 sm:py-5 mx-1 sm:mx-3 rounded-lg mb-2">
       <span
-        className={`${
+        className={`text-sm sm:text-base truncate pr-2 ${
           item.completed ? "line-through text-gray-400" : "text-base-content"
         }`}
       >
         {item.name}
       </span>
 
-      <div className="flex items-center">
+      <div className="flex items-center shrink-0 gap-2 sm:gap-3">
         <FontAwesomeIcon
           icon={checkIcon}
           onClick={() => onCheck(item._id)}
-          className={`cursor-pointer text-lg mr-3 ${
+          className={`cursor-pointer text-base sm:text-lg ${
             item.completed ? "text-success" : "text-gray-400"
           }`}
         />
@@ -31,7 +31,7 @@ function Item({ item, onCheck, onDelete }) {
         <FontAwesomeIcon
           icon={faTrashCan}
           onClick={() => onDelete(item._id)}
-          className="cursor-pointer text-lg text-error hover:text-error-focus"
+          className="cursor-pointer text-base sm:text-lg text-error hover:text-error-focus"
         />
       </div>
     </li>

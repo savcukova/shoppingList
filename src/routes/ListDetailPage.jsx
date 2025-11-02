@@ -144,7 +144,7 @@ function ListDetailPage() {
   }
 
   return (
-    <div className="flex-col space-y-4 px-6">
+    <div className="flex-col space-y-4 px-4 sm:px-6 md:px-8 max-w-2xl mx-auto">
       <div>
         <ListHeader
           name={list.name}

@@ -1,27 +1,33 @@
-function ConfirmationDialog({ open, actionType, onConfirm, onCancel }) {
+function ConfirmationDialog({
+  open,
+  actionType,
+  onConfirm,
+  onCancel,
+  title: customTitle,
+}) {
   const getDialogContent = () => {
     switch (actionType) {
       case "delete":
         return {
-          title: "Delete list?",
+          title: customTitle || "Delete list?",
           confirmText: "Delete",
           confirmButtonClass: "btn-error",
         };
       case "archive":
         return {
-          title: "Archive list?",
+          title: customTitle || "Archive list?",
           confirmText: "Archive",
           confirmButtonClass: "btn-primary",
         };
       case "remove":
         return {
-          title: "Delete user?",
+          title: customTitle || "Delete user?",
           confirmText: "Delete",
           confirmButtonClass: "btn-error",
         };
       default:
         return {
-          title: "Confirm?",
+          title: customTitle || "Confirm?",
           confirmText: "Confirm",
           confirmButtonClass: "btn-primary",
         };
@@ -36,30 +42,38 @@ function ConfirmationDialog({ open, actionType, onConfirm, onCancel }) {
 
   return (
     <dialog className="modal modal-open">
-      <div className="modal-box w-auto max-w-xs">
-        <h3 className="font-bold text-lg text-center mb-4">{title}</h3>
+      <div className="modal-box w-auto max-w-xs sm:max-w-sm">
+        <h3 className="font-bold text-base sm:text-lg text-center mb-4">
+          {title}
+        </h3>
 
         <div className="modal-action justify-center space-x-2">
           {actionType === "remove" ? (
             <>
               <button
                 onClick={onConfirm}
-                className={`btn ${confirmButtonClass}`}
+                className={`btn btn-sm sm:btn-md ${confirmButtonClass}`}
               >
                 {confirmText}
               </button>
-              <button onClick={onCancel} className="btn btn-ghost">
+              <button
+                onClick={onCancel}
+                className="btn btn-sm sm:btn-md btn-ghost"
+              >
                 Cancel
               </button>
             </>
           ) : (
             <>
-              <button onClick={onCancel} className="btn btn-ghost">
+              <button
+                onClick={onCancel}
+                className="btn btn-sm sm:btn-md btn-ghost"
+              >
                 Cancel
               </button>
               <button
                 onClick={onConfirm}
-                className={`btn ${confirmButtonClass}`}
+                className={`btn btn-sm sm:btn-md ${confirmButtonClass}`}
               >
                 {confirmText}
               </button>
