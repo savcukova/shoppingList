@@ -1,7 +1,6 @@
 import Member from "./Member.jsx";
 
 function MemberList({ members, onRemoveMember, isOwner, currentUserId }) {
-  // Filtrujeme jen "other users" - vyloučíme ownery
   const otherUsers = members.filter((member) => member.role !== "owner");
 
   if (otherUsers.length === 0) {

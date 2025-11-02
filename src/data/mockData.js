@@ -1,3 +1,18 @@
+export const MOCK_USERS = [
+  {
+    user_id: "672def8a7ab28f521e42a123",
+    email: "owner@example.com",
+    name: "Jan Novak (Owner)",
+    password: "password",
+  },
+  {
+    user_id: "b89cde0c8cd49h743h64d356",
+    email: "member@example.com",
+    name: "Jana Nova (Member)",
+    password: "password",
+  },
+];
+
 export const INITIAL_SHOPPING_LISTS = [
   {
     _id: "a44bbf9b8bc39g632f53c245",

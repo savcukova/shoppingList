@@ -20,7 +20,7 @@ function ListHeader({ name, isOwner, onBack, onEdit, onDelete, onArchive }) {
       </div>
 
       <div className="shrink-0">
-        {isOwner && (
+        {isOwner && onEdit && onDelete && onArchive && (
           <div className="flex items-center space-x-1">
             <button
               onClick={onEdit}

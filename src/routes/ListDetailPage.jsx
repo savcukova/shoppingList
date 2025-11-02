@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from "react";
-
 import { useNavigate, useParams } from "react-router-dom";
+
 import { useShoppingLists } from "../contexts/ShoppingListsContext.jsx";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 // components
 import ListHeader from "../components/ListHeader.jsx";
@@ -17,7 +18,6 @@ function ListDetailPage() {
 
   const {
     lists,
-    CURRENT_USER_ID,
     handleSaveName,
     handleAddItem,
     handleToggleItem,
@@ -26,11 +26,29 @@ function ListDetailPage() {
     handleDeleteList,
   } = useShoppingLists();
 
+  const { currentUser } = useAuth();
+
   const { listId } = useParams();
   const list = useMemo(
     () => lists.find((list) => list._id === listId),
     [lists, listId]
   );
+
+  const userRole = useMemo(() => {
+    if (!list || !currentUser) return null;
+    return list.members.find((member) => member.user_id === currentUser.id)
+      ?.role;
+  }, [list, currentUser]);
+
+  // Práva v aplikaci:
+  // OWNER může: editovat název, smazat/archivovat list, smazat itemy, přidávat/smazat členy
+  // MEMBER může: přidávat itemy, checknout itemy, smazat sebe ze seznamu
+  const isOwner = userRole === "owner";
+  const canManageList = isOwner; // editovat název, smazat/archivovat, smazat itemy
+  const canAddItem = isOwner || userRole === "member"; // přidávat itemy
+  const canCheckItem = isOwner || userRole === "member"; // checknout itemy
+  const canDeleteItem = isOwner; // smazat itemy - jen owner
+  const canView = isOwner || userRole === "member"; // zobrazit list
 
   const [isEditingName, setIsEditingName] = useState(false);
   const [isAddingItem, setIsAddingItem] = useState(false);
@@ -38,19 +56,14 @@ function ListDetailPage() {
   const [listNameValue, setListNameValue] = useState("");
   const [newItemValue, setNewItemValue] = useState("");
 
-  const isOwner = useMemo(
-    () => (list ? list.owner_id === CURRENT_USER_ID : false),
-    [list, CURRENT_USER_ID]
-  );
+  const [activeTab, setActiveTab] = useState("incomplete");
+  const [dialog, setDialog] = useState({ open: false, actionType: null });
 
   useEffect(() => {
     if (list) {
       setListNameValue(list.name || "");
     }
   }, [list]);
-
-  const [activeTab, setActiveTab] = useState("incomplete");
-  const [dialog, setDialog] = useState({ open: false, actionType: null });
 
   const filteredItems = useMemo(() => {
     if (!list) return [];
@@ -65,6 +78,14 @@ function ListDetailPage() {
     return (
       <div className="p-4 text-center">
         <p>List not found</p>
+      </div>
+    );
+  }
+
+  if (!canView) {
+    return (
+      <div className="p-4 text-center">
+        <p>Access Denied. You are not a member of this list.</p>
       </div>
     );
   }
@@ -97,7 +118,7 @@ function ListDetailPage() {
   const onAdd = () => {
     if (!newItemValue.trim()) return;
 
-    handleAddItem(listId, newItemValue);
+    handleAddItem(listId, newItemValue, currentUser?.id);
     setIsAddingItem(false);
     setNewItemValue("");
   };
@@ -129,7 +150,7 @@ function ListDetailPage() {
         onChange={(e) => setListNameValue(e.target.value)}
         onSave={onSave}
         onCancel={handleCancelEdit}
-        isOwner={isOwner}
+        isOwner={canManageList}
         onMembers={() => navigate(`/shopping-lists/${listId}/members`)}
       />
     );
@@ -151,11 +172,11 @@ function ListDetailPage() {
       <div>
         <ListHeader
           name={list.name}
-          isOwner={isOwner}
+          isOwner={canManageList}
           onBack={() => console.log("Back to all shopping lists")}
-          onEdit={handleEditListName}
-          onDelete={() => handleShowDialog("delete")}
-          onArchive={() => handleShowDialog("archive")}
+          onEdit={canManageList ? handleEditListName : null}
+          onDelete={canManageList ? () => handleShowDialog("delete") : null}
+          onArchive={canManageList ? () => handleShowDialog("archive") : null}
         />
 
         {list.items.length > 0 && (
@@ -164,13 +185,19 @@ function ListDetailPage() {
 
         <ItemList
           items={filteredItems}
-          onCheck={(itemId) => handleToggleItem(listId, itemId)}
-          onDeleteItem={(itemId) => handleDeleteItem(listId, itemId)}
+          onCheck={
+            canCheckItem ? (itemId) => handleToggleItem(listId, itemId) : null
+          }
+          onDeleteItem={
+            canDeleteItem ? (itemId) => handleDeleteItem(listId, itemId) : null
+          }
         />
 
-        <div className="flex justify-center mt-6">
-          <AddNewItemBtn onClick={handleShowAddForm} />
-        </div>
+        {canAddItem && (
+          <div className="flex justify-center mt-6">
+            <AddNewItemBtn onClick={handleShowAddForm} />
+          </div>
+        )}
       </div>
 
       <ConfirmationDialog

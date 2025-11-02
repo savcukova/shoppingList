@@ -9,6 +9,9 @@ import App from "./App.jsx";
 
 import ListDetailPage from "./routes/ListDetailPage.jsx";
 import MembersPage from "./routes/MembersPage.jsx";
+import LoginPage from "./routes/LoginPage.jsx";
+
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -16,12 +19,21 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: "/shopping-lists/:listId",
-        element: <ListDetailPage />,
+        path: "/login",
+        element: <LoginPage />,
       },
       {
-        path: "/shopping-lists/:listId/members",
-        element: <MembersPage />,
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: "/shopping-lists/:listId",
+            element: <ListDetailPage />,
+          },
+          {
+            path: "/shopping-lists/:listId/members",
+            element: <MembersPage />,
+          },
+        ],
       },
     ],
   },

@@ -2,11 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 function Member({ member, onRemove, isOwner, currentUserId }) {
-  // Owner může smazat všechny členy kromě sebe (všichni owners jsou vyloučeni)
-  // Member může smazat jen sebe
   const canDelete =
-    (isOwner && member.role !== "owner") || // owner smaže všechny members (ne owners, tedy ne sebe)
-    (!isOwner && member.user_id === currentUserId && member.role !== "owner"); // member smaže jen sebe
+    (isOwner && member.role !== "owner") ||
+    (!isOwner && member.user_id === currentUserId && member.role !== "owner");
 
   return (
     <li className="flex items-center justify-between bg-base-200 px-3 sm:px-4 py-4 sm:py-5 mx-1 sm:mx-3 rounded-lg mb-2">

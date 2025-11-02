@@ -20,19 +20,23 @@ function Item({ item, onCheck, onDelete }) {
       </span>
 
       <div className="flex items-center shrink-0 gap-2 sm:gap-3">
-        <FontAwesomeIcon
-          icon={checkIcon}
-          onClick={() => onCheck(item._id)}
-          className={`cursor-pointer text-base sm:text-lg ${
-            item.completed ? "text-success" : "text-gray-400"
-          }`}
-        />
+        {onCheck && (
+          <FontAwesomeIcon
+            icon={checkIcon}
+            onClick={() => onCheck(item._id)}
+            className={`cursor-pointer text-base sm:text-lg ${
+              item.completed ? "text-success" : "text-gray-400"
+            }`}
+          />
+        )}
 
-        <FontAwesomeIcon
-          icon={faTrashCan}
-          onClick={() => onDelete(item._id)}
-          className="cursor-pointer text-base sm:text-lg text-error hover:text-error-focus"
-        />
+        {onDelete && (
+          <FontAwesomeIcon
+            icon={faTrashCan}
+            onClick={() => onDelete(item._id)}
+            className="cursor-pointer text-base sm:text-lg text-error hover:text-error-focus"
+          />
+        )}
       </div>
     </li>
   );

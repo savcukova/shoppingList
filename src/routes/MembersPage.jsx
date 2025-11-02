@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useShoppingLists } from "../contexts/ShoppingListsContext.jsx";
+import { useAuth } from "../contexts/AuthContext.jsx";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -11,8 +12,8 @@ import ConfirmationDialog from "../components/ConfirmationDialog.jsx";
 
 function MembersPage() {
   const navigate = useNavigate();
-  const { lists, CURRENT_USER_ID, handleAddMember, handleRemoveMember } =
-    useShoppingLists();
+  const { lists, handleAddMember, handleRemoveMember } = useShoppingLists();
+  const { currentUser } = useAuth();
 
   const { listId } = useParams();
   const list = useMemo(
@@ -20,10 +21,14 @@ function MembersPage() {
     [lists, listId]
   );
 
-  const isOwner = useMemo(
-    () => (list ? list.owner_id === CURRENT_USER_ID : false),
-    [list, CURRENT_USER_ID]
-  );
+  const userRole = useMemo(() => {
+    if (!list || !currentUser) return null;
+    return list.members.find((member) => member.user_id === currentUser.id)
+      ?.role;
+  }, [list, currentUser]);
+
+  const isOwner = userRole === "owner";
+  const canView = userRole === "owner" || userRole === "member";
 
   const [isAdding, setIsAdding] = useState(false);
   const [email, setEmail] = useState("");
@@ -69,6 +74,14 @@ function MembersPage() {
     );
   }
 
+  if (!canView) {
+    return (
+      <div className="p-4 sm:p-6 md:p-8 text-center">
+        <p>Access Denied. You are not a member of this list.</p>
+      </div>
+    );
+  }
+
   if (isAdding) {
     return (
       <AddNewMemberForm
@@ -93,7 +106,7 @@ function MembersPage() {
           members={list.members}
           onRemoveMember={onShowRemoveDialog}
           isOwner={isOwner}
-          currentUserId={CURRENT_USER_ID}
+          currentUserId={currentUser?.id}
         />
 
         {isOwner && (

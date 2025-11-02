@@ -1,22 +1,22 @@
 import React, { createContext, useContext, useState } from "react";
-import { INITIAL_SHOPPING_LISTS, CURRENT_USER_ID } from "../data/mockData.js";
+import { INITIAL_SHOPPING_LISTS } from "../data/mockData.js";
 
 const ShoppingListsContext = createContext();
 
 export function ShoppingListsProvider({ children }) {
   const [lists, setLists] = useState(INITIAL_SHOPPING_LISTS);
 
-  const handleCreateList = (listName) => {
+  const handleCreateList = (listName, ownerUser) => {
     const newList = {
       _id: `list-${Date.now()}`,
       name: listName,
-      owner_id: CURRENT_USER_ID,
+      owner_id: ownerUser.user_id,
       is_archived: false,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       members: [
         {
-          user_id: CURRENT_USER_ID,
+          user_id: ownerUser.user_id,
           name: "Current User",
           role: "owner",
         },
@@ -44,12 +44,12 @@ export function ShoppingListsProvider({ children }) {
     setLists((prevLists) => prevLists.filter((list) => list._id !== listId));
   };
 
-  const handleAddItem = (listId, newItemName) => {
+  const handleAddItem = (listId, newItemName, userId) => {
     const newItem = {
       _id: `item-${Date.now()}`,
       name: newItemName,
       completed: false,
-      added_by: CURRENT_USER_ID,
+      added_by: userId,
       created_at: new Date().toISOString(),
     };
 
@@ -158,7 +158,6 @@ export function ShoppingListsProvider({ children }) {
 
   const value = {
     lists,
-    CURRENT_USER_ID,
     handleCreateList,
     handleArchiveList,
     handleDeleteList,

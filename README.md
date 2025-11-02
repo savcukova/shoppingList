@@ -1,16 +1,65 @@
-# React + Vite
+# Shopping List App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplikace pro správu nákupních seznamů s možností sdílení mezi uživateli.
 
-Currently, two official plugins are available:
+## Přihlášení
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Aplikace má dva testovací účty pro přihlášení:
 
-## React Compiler
+### Owner účet (Vlastník seznamu)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Email:** `owner@example.com`
+- **Password:** `password`
 
-## Expanding the ESLint configuration
+**Práva Owner:**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- ✅ Editovat název seznamu
+- ✅ Smazat/archivovat seznam
+- ✅ Smazat itemy
+- ✅ Přidávat členy do seznamu
+- ✅ Odebírat členy ze seznamu
+- ✅ Přidávat itemy
+- ✅ Checknout/odchecknout itemy
+- ✅ Zobrazit seznam
+
+### Member účet (Člen seznamu)
+
+- **Email:** `member@example.com`
+- **Password:** `password`
+
+**Práva Member:**
+
+- ✅ Přidávat itemy
+- ✅ Checknout/odchecknout itemy
+- ✅ Zobrazit seznam
+- ✅ Odejít ze seznamu (smazat sebe)
+- ❌ Editovat název seznamu
+- ❌ Smazat/archivovat seznam
+- ❌ Smazat itemy
+- ❌ Přidávat/odebírat jiné členy
+
+## Jak se přihlásit
+
+1. Otevři aplikaci v prohlížeči
+2. Zadej email a password do přihlašovacího formuláře
+3. Klikni na tlačítko "Login"
+4. Po úspěšném přihlášení budeš přesměrován na první seznam
+
+## Testování různých rolí
+
+### Testování jako Owner:
+
+1. Přihlas se jako `owner@example.com`
+2. Měl bys vidět všechny funkce včetně tlačítek pro editaci, smazání a archivaci
+3. Můžeš přidávat členy přes "Manage other users" v Edit list formuláři
+
+### Testování jako Member:
+
+1. Přihlas se jako `member@example.com`
+2. Měl bys vidět jen základní funkce - přidávání itemů, checkování
+3. Neměl bys vidět tlačítka pro editaci, smazání nebo archivaci seznamu
+4. V MembersPage můžeš smazat jen sebe, ne ostatní členy
+
+## Logout
+
+Pro odhlášení klikni na tlačítko logout. Po odhlášení budeš přesměrován zpět na přihlašovací stránku.
