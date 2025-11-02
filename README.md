@@ -45,9 +45,9 @@ Aplikace má několik testovacích účtů pro přihlášení:
 - ✅ Checknout/odchecknout itemy
 - ✅ Zobrazit seznam
 - ✅ Odejít ze seznamu (smazat sebe)
+- ✅ Smazat itemy
 - ❌ Editovat název seznamu
 - ❌ Smazat/archivovat seznam
-- ❌ Smazat itemy
 - ❌ Přidávat/odebírat jiné členy
 
 ## Jak se přihlásit
@@ -57,21 +57,3 @@ Aplikace má několik testovacích účtů pro přihlášení:
 3. Klikni na tlačítko "Login"
 4. Po úspěšném přihlášení budeš přesměrován na první seznam
 
-## Testování různých rolí
-
-### Testování jako Owner:
-
-1. Přihlas se jako `owner@example.com`
-2. Měl bys vidět všechny funkce včetně tlačítek pro editaci, smazání a archivaci
-3. Můžeš přidávat členy přes "Manage other users" v Edit list formuláři
-
-### Testování jako Member:
-
-1. Přihlas se jako `member@example.com`
-2. Měl bys vidět jen základní funkce - přidávání itemů, checkování
-3. Neměl bys vidět tlačítka pro editaci, smazání nebo archivaci seznamu
-4. V MembersPage můžeš smazat jen sebe, ne ostatní členy
-
-## Logout
-
-Pro odhlášení klikni na tlačítko logout. Po odhlášení budeš přesměrován zpět na přihlašovací stránku.
