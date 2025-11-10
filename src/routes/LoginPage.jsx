@@ -18,7 +18,7 @@ function LoginPage() {
 
     const success = login(email, password);
     if (success) {
-      navigate("/shopping-lists/a44bbf9b8bc39g632f53c245");
+      navigate("/");
     }
   };
 

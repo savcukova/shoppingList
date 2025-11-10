@@ -135,14 +135,16 @@ function ListDetailPage() {
 
   const handleConfirmDialog = () => {
     if (dialog.actionType === "delete") {
-      alert(`Delete list ${list.name}`);
       handleDeleteList(listId);
+      handleCloseDialog();
+      // Redirect na Dashboard po smazání
+      navigate("/");
     } else if (dialog.actionType === "archive") {
-      alert(`Archive list ${list.name}`);
       handleArchiveList(listId, true);
+      handleCloseDialog();
+    } else {
+      handleCloseDialog();
     }
-
-    handleCloseDialog();
   };
 
   const handleShowLeaveDialog = () => {
@@ -192,7 +194,7 @@ function ListDetailPage() {
         <ListHeader
           name={list.name}
           isOwner={canManageList}
-          onBack={null}
+          onBack={() => navigate("/")}
           onEdit={canManageList ? handleEditListName : null}
           onDelete={canManageList ? () => handleShowDialog("delete") : null}
           onArchive={canManageList ? () => handleShowDialog("archive") : null}

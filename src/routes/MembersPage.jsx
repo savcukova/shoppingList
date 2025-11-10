@@ -98,7 +98,7 @@ function MembersPage() {
       <div>
         <ListHeader
           name="List users"
-          onBack={() => navigate(-1)}
+          onBack={() => navigate(`/shopping-lists/${listId}`)}
           isOwner={false}
         />
 

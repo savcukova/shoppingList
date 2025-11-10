@@ -11,6 +11,7 @@ import App from "./App.jsx";
 import ListDetailPage from "./routes/ListDetailPage.jsx";
 import MembersPage from "./routes/MembersPage.jsx";
 import LoginPage from "./routes/LoginPage.jsx";
+import Dashboard from "./routes/Dashboard.jsx";
 
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
+          {
+            index: true,
+            element: <Dashboard />,
+          },
           {
             path: "/shopping-lists/:listId",
             element: <ListDetailPage />,
