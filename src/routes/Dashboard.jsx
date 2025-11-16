@@ -88,17 +88,6 @@ function Dashboard() {
     </div>
   );
 
-  if (isAddModalOpen) {
-    return (
-      <AddListForm
-        value={listNameValue}
-        onChange={(e) => setListNameValue(e.target.value)}
-        onAdd={onAddList}
-        onCancel={() => setIsAddModalOpen(false)}
-      />
-    );
-  }
-
   return (
     <div className="flex-col space-y-4 px-4 sm:px-6 md:px-8 max-w-2xl mx-auto">
       <div className="flex items-center justify-between mb-2">
@@ -150,6 +139,15 @@ function Dashboard() {
         onConfirm={handleConfirmDelete}
         onCancel={handleCloseDialog}
       />
+
+      {isAddModalOpen && (
+        <AddListForm
+          value={listNameValue}
+          onChange={(e) => setListNameValue(e.target.value)}
+          onAdd={onAddList}
+          onCancel={() => setIsAddModalOpen(false)}
+        />
+      )}
     </div>
   );
 }

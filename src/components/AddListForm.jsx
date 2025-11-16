@@ -5,42 +5,45 @@ function AddListForm({ value, onChange, onAdd, onCancel }) {
   };
 
   return (
-    <div className="flex-col space-y-4 px-4 sm:px-6 md:px-8 max-w-2xl mx-auto">
-      <p className="text-xl sm:text-2xl font-bold">Add new</p>
+    <dialog className="modal modal-open">
+      <div className="modal-box w-auto max-w-md">
+        <h3 className="font-bold text-lg mb-4">Add new list</h3>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="form-control w-full">
-          <label htmlFor="listName" className="label">
-            <span className="label-text text-sm sm:text-base">List name</span>
-          </label>
-          <input
-            type="text"
-            id="listName"
-            value={value}
-            onChange={onChange}
-            className="input input-bordered w-full text-sm sm:text-base"
-            placeholder="All I need"
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="form-control w-full">
+            <label htmlFor="listName" className="label">
+              <span className="label-text text-sm sm:text-base">List name</span>
+            </label>
+            <input
+              type="text"
+              id="listName"
+              value={value}
+              onChange={onChange}
+              className="input input-bordered w-full text-sm sm:text-base"
+              placeholder="List name"
+              autoFocus
+            />
+          </div>
 
-        <div className="pt-2 space-y-2">
-          <button
-            type="submit"
-            className="btn btn-primary btn-sm sm:btn-md w-full"
-          >
-            Add
-          </button>
+          <div className="modal-action">
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm sm:btn-md"
+              onClick={onCancel}
+            >
+              Cancel
+            </button>
+            <button type="submit" className="btn btn-primary btn-sm sm:btn-md">
+              Add
+            </button>
+          </div>
+        </form>
+      </div>
 
-          <button
-            type="button"
-            className="btn bg-base-200 btn-sm sm:btn-md w-full"
-            onClick={onCancel}
-          >
-            Cancel
-          </button>
-        </div>
+      <form method="dialog" className="modal-backdrop">
+        <button onClick={onCancel}>close</button>
       </form>
-    </div>
+    </dialog>
   );
 }
 
