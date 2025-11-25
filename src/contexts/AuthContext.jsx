@@ -1,41 +1,81 @@
-import { createContext, useContext, useState } from "react";
-import { MOCK_USERS } from "../data/mockData.js";
+import { createContext, useContext, useState, useEffect } from "react";
+import * as api from "../api.js";
 
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const login = (email, password) => {
-    console.log("Signing in user: ", email);
-    const foundUser = MOCK_USERS.find(
-      (user) => user.email === email && user.password === password
-    );
+  // Check for existing token on mount
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    const userData = localStorage.getItem("userData");
+    if (token && userData) {
+      try {
+        setCurrentUser(JSON.parse(userData));
+      } catch {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userData");
+      }
+    }
+    setIsLoading(false);
+  }, []);
 
-    if (!foundUser) {
-      alert("Invalid email or password");
+  const login = async (email, password) => {
+    try {
+      const response = await api.login({ email, password });
+
+      if (response.status === "success" && response.data?.user) {
+        const user = response.data.user;
+        setCurrentUser(user);
+        localStorage.setItem("userData", JSON.stringify(user));
+        return true;
+      } else {
+        alert("Login failed");
+        return false;
+      }
+    } catch (err) {
+      const errorMessage = err.data?.message || err.message || "Login failed";
+      alert(errorMessage);
       return false;
     }
+  };
 
-    const user = {
-      id: foundUser.user_id,
-      email: foundUser.email,
-      name: foundUser.name,
-    };
+  const register = async (email, password, name) => {
+    try {
+      const response = await api.register({ email, password, name });
 
-    setCurrentUser(user);
-    return true;
+      if (response.status === "success" && response.data?.user) {
+        const user = response.data.user;
+        setCurrentUser(user);
+        localStorage.setItem("userData", JSON.stringify(user));
+        return true;
+      } else {
+        alert("Registration failed");
+        return false;
+      }
+    } catch (err) {
+      const errorMessage =
+        err.data?.message || err.message || "Registration failed";
+      alert(errorMessage);
+      return false;
+    }
   };
 
   const logout = () => {
     setCurrentUser(null);
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userData");
   };
 
   const value = {
     currentUser,
     login,
+    register,
     logout,
     isAuthenticated: !!currentUser,
+    isLoading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

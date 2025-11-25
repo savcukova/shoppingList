@@ -25,6 +25,7 @@ function ListDetailPage() {
     handleArchiveList,
     handleDeleteList,
     handleRemoveMember,
+    loadList,
   } = useShoppingLists();
 
   const { currentUser } = useAuth();
@@ -60,6 +61,14 @@ function ListDetailPage() {
   const [activeTab, setActiveTab] = useState("incomplete");
   const [dialog, setDialog] = useState({ open: false, actionType: null });
   const [leaveDialog, setLeaveDialog] = useState({ open: false });
+
+  // Load list detail when listId changes
+  useEffect(() => {
+    if (listId) {
+      loadList(listId).catch(console.error);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [listId]);
 
   useEffect(() => {
     if (list) {
@@ -98,9 +107,13 @@ function ListDetailPage() {
     setIsEditingName(true);
   };
 
-  const onSave = () => {
-    handleSaveName(listId, listNameValue);
-    setIsEditingName(false);
+  const onSave = async () => {
+    try {
+      await handleSaveName(listId, listNameValue);
+      setIsEditingName(false);
+    } catch {
+      // Error already handled in context
+    }
   };
 
   const handleCancelEdit = () => {
@@ -117,12 +130,15 @@ function ListDetailPage() {
   };
 
   // handlers for adding item
-  const onAdd = () => {
+  const onAdd = async () => {
     if (!newItemValue.trim()) return;
-
-    handleAddItem(listId, newItemValue, currentUser?.id);
-    setIsAddingItem(false);
-    setNewItemValue("");
+    try {
+      await handleAddItem(listId, newItemValue);
+      setIsAddingItem(false);
+      setNewItemValue("");
+    } catch {
+      // Error already handled in context
+    }
   };
 
   const handleCancelAddItem = () => {
@@ -133,14 +149,17 @@ function ListDetailPage() {
     setIsAddingItem(true);
   };
 
-  const handleConfirmDialog = () => {
+  const handleConfirmDialog = async () => {
     if (dialog.actionType === "delete") {
-      handleDeleteList(listId);
-      handleCloseDialog();
-      // Redirect na Dashboard po smazání
-      navigate("/");
+      try {
+        await handleDeleteList(listId);
+        handleCloseDialog();
+        navigate("/");
+      } catch {
+        // Error already handled in context
+      }
     } else if (dialog.actionType === "archive") {
-      handleArchiveList(listId, true);
+      await handleArchiveList(listId, true);
       handleCloseDialog();
     } else {
       handleCloseDialog();
@@ -155,12 +174,15 @@ function ListDetailPage() {
     setLeaveDialog({ open: false });
   };
 
-  const handleConfirmLeave = () => {
+  const handleConfirmLeave = async () => {
     if (currentUser) {
-      handleRemoveMember(listId, currentUser.id);
-      handleCloseLeaveDialog();
-      // Navigate to home page after leaving
-      navigate("/");
+      try {
+        await handleRemoveMember(listId, currentUser.id);
+        handleCloseLeaveDialog();
+        navigate("/");
+      } catch {
+        // Error already handled in context
+      }
     }
   };
 

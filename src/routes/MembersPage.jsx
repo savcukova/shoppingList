@@ -38,14 +38,18 @@ function MembersPage() {
     memberName: null,
   });
 
-  const onAddMember = () => {
+  const onAddMember = async () => {
     if (!email.trim()) {
       alert("Please enter email");
       return;
     }
-    handleAddMember(listId, email);
-    setEmail("");
-    setIsAdding(false);
+    try {
+      await handleAddMember(listId, email);
+      setEmail("");
+      setIsAdding(false);
+    } catch {
+      // Error already handled in context
+    }
   };
 
   const onShowRemoveDialog = (memberId) => {
@@ -57,9 +61,13 @@ function MembersPage() {
     });
   };
 
-  const onConfirmRemove = () => {
-    handleRemoveMember(listId, dialog.memberId);
-    handleCloseDialog();
+  const onConfirmRemove = async () => {
+    try {
+      await handleRemoveMember(listId, dialog.memberId);
+      handleCloseDialog();
+    } catch {
+      // Error already handled in context
+    }
   };
 
   const handleCloseDialog = () => {

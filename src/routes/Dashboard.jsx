@@ -48,9 +48,13 @@ function Dashboard() {
   const handleShowDeleteDialog = (listId) => {
     setDialog({ open: true, listId: listId });
   };
-  const handleConfirmDelete = () => {
-    handleDeleteList(dialog.listId);
-    setDialog({ open: false, listId: null });
+  const handleConfirmDelete = async () => {
+    try {
+      await handleDeleteList(dialog.listId);
+      setDialog({ open: false, listId: null });
+    } catch {
+      // Error already handled in context
+    }
   };
 
   const handleLogout = () => {
@@ -63,16 +67,15 @@ function Dashboard() {
   const handleArchive = (listId, isArchived) => {
     handleArchiveList(listId, !isArchived);
   };
-  const onAddList = () => {
+  const onAddList = async () => {
     if (!currentUser || !listNameValue.trim()) return;
-    // handleCreateList očekává objekt s user_id, ale currentUser má id
-    const ownerUser = {
-      user_id: currentUser.id,
-      name: currentUser.name,
-    };
-    handleCreateList(listNameValue.trim(), ownerUser);
-    setListNameValue("");
-    setIsAddModalOpen(false);
+    try {
+      await handleCreateList(listNameValue.trim());
+      setListNameValue("");
+      setIsAddModalOpen(false);
+    } catch {
+      // Error already handled in context
+    }
   };
 
   useEffect(() => {
