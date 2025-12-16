@@ -8,6 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "serve": "npx serve -s dist",
     "tw-init": "tailwindcss init -p"
   },
   "dependencies": {
