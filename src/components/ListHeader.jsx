@@ -6,6 +6,7 @@ import {
   faSignOutAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 function ListHeader({
   name,
@@ -16,6 +17,7 @@ function ListHeader({
   onArchive,
   onLeave,
 }) {
+  const { t } = useLanguage();
   return (
     <div className="flex flex-wrap items-center justify-between mb-4 mt-2 gap-2">
       <div className="flex items-center flex-1 min-w-0">
@@ -61,7 +63,7 @@ function ListHeader({
             <button
               onClick={onLeave}
               className="btn btn-ghost btn-square btn-sm sm:btn-md"
-              title="Leave list"
+              title={t("leaveList")}
             >
               <FontAwesomeIcon icon={faSignOutAlt} />
             </button>

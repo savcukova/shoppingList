@@ -1,4 +1,8 @@
+import { useLanguage } from "../contexts/LanguageContext.jsx";
+
 function DashboardTabs({ activeTab, onTabChange }) {
+  const { t } = useLanguage();
+  
   return (
     <div className="flex justify-center mx-1 sm:mx-3 mb-4 space-x-2">
       <button
@@ -7,7 +11,7 @@ function DashboardTabs({ activeTab, onTabChange }) {
           activeTab === "my" ? "badge-primary" : "badge-ghost"
         }`}
       >
-        My lists
+        {t("myLists")}
       </button>
       <button
         onClick={() => onTabChange("archived")}
@@ -15,7 +19,7 @@ function DashboardTabs({ activeTab, onTabChange }) {
           activeTab === "archived" ? "badge-primary" : "badge-ghost"
         }`}
       >
-        Archived
+        {t("archived")}
       </button>
     </div>
   );

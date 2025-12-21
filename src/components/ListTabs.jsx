@@ -1,4 +1,8 @@
+import { useLanguage } from "../contexts/LanguageContext.jsx";
+
 function ListTabs({ activeTab, onTabChange }) {
+  const { t } = useLanguage();
+  
   return (
     <div className="flex justify-center mx-1 sm:mx-3 mb-4 space-x-2">
       <button
@@ -7,7 +11,7 @@ function ListTabs({ activeTab, onTabChange }) {
           activeTab === "incomplete" ? "badge-primary" : "badge-ghost"
         }`}
       >
-        Incomplete
+        {t("incomplete")}
       </button>
       <button
         onClick={() => onTabChange("all")}
@@ -15,7 +19,7 @@ function ListTabs({ activeTab, onTabChange }) {
           activeTab === "all" ? "badge-primary" : "badge-ghost"
         }`}
       >
-        All
+        {t("allItems")}
       </button>
     </div>
   );

@@ -1,3 +1,5 @@
+import { useLanguage } from "../contexts/LanguageContext.jsx";
+
 function EditListForm({
   value,
   onChange,
@@ -6,6 +8,8 @@ function EditListForm({
   isOwner,
   onMembers,
 }) {
+  const { t } = useLanguage();
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     onSave();
@@ -13,13 +17,13 @@ function EditListForm({
 
   return (
     <div className="p-4 sm:p-6 md:p-8 space-y-6 max-w-md mx-auto">
-      <p className="text-xl sm:text-2xl font-bold">Edit list</p>
+      <p className="text-xl sm:text-2xl font-bold">{t("editList")}</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="form-control w-full">
           <label htmlFor="listName" className="label">
             <span className="label-text text-sm font-medium text-base-content text-opacity-80">
-              List name
+              {t("listName")}
             </span>
           </label>
 
@@ -37,7 +41,7 @@ function EditListForm({
             type="submit"
             className="btn btn-primary btn-sm sm:btn-md w-full"
           >
-            Save
+            {t("save")}
           </button>
           {isOwner && (
             <button
@@ -45,7 +49,7 @@ function EditListForm({
               onClick={onMembers}
               className="btn bg-base-200 btn-sm sm:btn-md w-full"
             >
-              Manage other users
+              {t("manageOtherUsers")}
             </button>
           )}
           <button
@@ -53,7 +57,7 @@ function EditListForm({
             onClick={onCancel}
             className="btn bg-base-200 btn-sm sm:btn-md w-full"
           >
-            Cancel
+            {t("cancel")}
           </button>
         </div>
       </form>

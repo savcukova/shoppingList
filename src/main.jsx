@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { ShoppingListsProvider } from "./contexts/ShoppingListsContext.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
+import { ThemeProvider } from "./contexts/ThemeContext.jsx";
+import { LanguageProvider } from "./contexts/LanguageContext.jsx";
 
 import "./main.css";
 import App from "./App.jsx";
@@ -47,10 +49,14 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <AuthProvider>
-      <ShoppingListsProvider>
-        <RouterProvider router={router} />
-      </ShoppingListsProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <ShoppingListsProvider>
+            <RouterProvider router={router} />
+          </ShoppingListsProvider>
+        </AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   </StrictMode>
 );

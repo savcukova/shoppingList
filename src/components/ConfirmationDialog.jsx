@@ -1,3 +1,5 @@
+import { useLanguage } from "../contexts/LanguageContext.jsx";
+
 function ConfirmationDialog({
   open,
   actionType,
@@ -5,30 +7,32 @@ function ConfirmationDialog({
   onCancel,
   title: customTitle,
 }) {
+  const { t } = useLanguage();
+  
   const getDialogContent = () => {
     switch (actionType) {
       case "delete":
         return {
-          title: customTitle || "Delete list?",
-          confirmText: "Delete",
+          title: customTitle || t("deleteList"),
+          confirmText: t("delete"),
           confirmButtonClass: "btn-error",
         };
       case "archive":
         return {
-          title: customTitle || "Archive list?",
-          confirmText: "Archive",
+          title: customTitle || t("archiveList"),
+          confirmText: t("archive"),
           confirmButtonClass: "btn-primary",
         };
       case "remove":
         return {
-          title: customTitle || "Delete user?",
-          confirmText: customTitle?.includes("Leave") ? "Leave" : "Delete",
+          title: customTitle || t("removeMember"),
+          confirmText: customTitle?.includes(t("leaveList")) ? t("leaveList") : t("delete"),
           confirmButtonClass: "btn-error",
         };
       default:
         return {
-          title: customTitle || "Confirm?",
-          confirmText: "Confirm",
+          title: customTitle || t("confirm") + "?",
+          confirmText: t("confirm"),
           confirmButtonClass: "btn-primary",
         };
     }
@@ -60,7 +64,7 @@ function ConfirmationDialog({
                 onClick={onCancel}
                 className="btn btn-sm sm:btn-md btn-ghost"
               >
-                Cancel
+                {t("cancel")}
               </button>
             </>
           ) : (
@@ -69,7 +73,7 @@ function ConfirmationDialog({
                 onClick={onCancel}
                 className="btn btn-sm sm:btn-md btn-ghost"
               >
-                Cancel
+                {t("cancel")}
               </button>
               <button
                 onClick={onConfirm}
@@ -83,7 +87,7 @@ function ConfirmationDialog({
       </div>
 
       <form method="dialog" className="modal-backdrop">
-        <button onClick={onCancel}>close</button>
+        <button onClick={onCancel}>{t("close")}</button>
       </form>
     </dialog>
   );

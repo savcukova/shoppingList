@@ -5,12 +5,16 @@ import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { useShoppingLists } from "../contexts/ShoppingListsContext.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 import DashboardTabs from "../components/DashboardTabs.jsx";
 import ShoppingList from "../components/ShoppingList.jsx";
 import AddListForm from "../components/AddListForm.jsx";
 import ConfirmationDialog from "../components/ConfirmationDialog.jsx";
 import AddNewItemBtn from "../components/AddNewItemBtn.jsx";
+import ListsBarChart from "../components/ListsBarChart.jsx";
+import ThemeToggle from "../components/ThemeToggle.jsx";
+import LanguageToggle from "../components/LanguageToggle.jsx";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -19,6 +23,7 @@ function Dashboard() {
     useShoppingLists();
 
   const { currentUser, logout } = useAuth();
+  const { t } = useLanguage();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [listNameValue, setListNameValue] = useState("");
@@ -87,32 +92,40 @@ function Dashboard() {
   // Empty state
   const EmptyState = () => (
     <div className="flex flex-col items-center justify-center py-10">
-      <p className="text-gray-500 text-base sm:text-lg">No lists</p>
+      <p className="text-gray-500 text-base sm:text-lg">{t("noLists")}</p>
     </div>
   );
 
   return (
-    <div className="flex-col space-y-4 px-4 sm:px-6 md:px-8 max-w-2xl mx-auto">
-      <div className="flex items-center justify-between mb-2">
+    <div className="flex-col space-y-4 px-4 sm:px-6 md:px-8 max-w-4xl mx-auto">
+      <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
         <h1 className="text-xl sm:text-2xl font-bold">
           {allUserLists.length === 0
-            ? "Shopping list"
+            ? t("shoppingList")
             : visibleLists.length === 0 && activeTab === "my"
-            ? "Shopping list"
-            : "Lists"}
+            ? t("shoppingList")
+            : t("lists")}
         </h1>
-        <button
-          onClick={handleLogout}
-          className="btn btn-ghost btn-sm sm:btn-md"
-          title="Logout"
-        >
-          <FontAwesomeIcon icon={faSignOutAlt} />
-          <span className="hidden sm:inline ml-2">Logout</span>
-        </button>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <LanguageToggle />
+          <button
+            onClick={handleLogout}
+            className="btn btn-ghost btn-sm sm:btn-md"
+            title={t("logout")}
+          >
+            <FontAwesomeIcon icon={faSignOutAlt} />
+            <span className="hidden sm:inline ml-2">{t("logout")}</span>
+          </button>
+        </div>
       </div>
 
       {allUserLists.length > 0 && (
         <DashboardTabs activeTab={activeTab} onTabChange={setActiveTab} />
+      )}
+
+      {visibleLists.length > 0 && activeTab === "my" && (
+        <ListsBarChart lists={visibleLists} />
       )}
 
       <div className="py-4">
@@ -138,7 +151,7 @@ function Dashboard() {
       <ConfirmationDialog
         open={dialog.open}
         actionType="delete"
-        title="Delete this list?"
+        title={t("deleteList")}
         onConfirm={handleConfirmDelete}
         onCancel={handleCloseDialog}
       />

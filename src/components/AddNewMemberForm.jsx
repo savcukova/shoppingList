@@ -1,4 +1,8 @@
+import { useLanguage } from "../contexts/LanguageContext.jsx";
+
 function AddNewMemberForm({ value, onChange, onAdd, onCancel }) {
+  const { t } = useLanguage();
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     onAdd();
@@ -6,7 +10,7 @@ function AddNewMemberForm({ value, onChange, onAdd, onCancel }) {
 
   return (
     <div className="p-4 sm:p-6 md:p-8 space-y-6 max-w-md mx-auto">
-      <p className="text-xl sm:text-2xl font-bold">Add new</p>
+      <p className="text-xl sm:text-2xl font-bold">{t("addMember")}</p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="form-control w-full">
@@ -16,7 +20,7 @@ function AddNewMemberForm({ value, onChange, onAdd, onCancel }) {
             value={value}
             onChange={onChange}
             className="input input-bordered w-full text-sm sm:text-base"
-            placeholder="Email"
+            placeholder={t("memberEmail")}
           />
         </div>
 
@@ -25,7 +29,7 @@ function AddNewMemberForm({ value, onChange, onAdd, onCancel }) {
             type="submit"
             className="btn btn-primary btn-sm sm:btn-md w-full"
           >
-            Add
+            {t("add")}
           </button>
 
           <button
@@ -33,7 +37,7 @@ function AddNewMemberForm({ value, onChange, onAdd, onCancel }) {
             className="btn bg-base-200 btn-sm sm:btn-md w-full"
             onClick={onCancel}
           >
-            Cancel
+            {t("cancel")}
           </button>
         </div>
       </form>

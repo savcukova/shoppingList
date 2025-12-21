@@ -1,7 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 function Member({ member, onRemove, isOwner, currentUserId }) {
+  const { t } = useLanguage();
+  
   const canDelete =
     (isOwner && member.role !== "owner") ||
     (!isOwner && member.user_id === currentUserId && member.role !== "owner");
@@ -14,7 +17,7 @@ function Member({ member, onRemove, isOwner, currentUserId }) {
 
           {member.role === "owner" && (
             <span className="badge badge-primary badge-xs sm:badge-sm ml-2">
-              Owner
+              {t("owner")}
             </span>
           )}
         </span>

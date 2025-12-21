@@ -1,10 +1,13 @@
 import Item from "./Item.jsx";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 function ItemList({ items, onCheck, onDeleteItem }) {
+  const { t } = useLanguage();
+  
   if (items.length === 0) {
     return (
       <div className="text-center py-10">
-        <p className="text-gray-500 mb-4">No items</p>
+        <p className="text-gray-500 mb-4">{t("noItems")}</p>
       </div>
     );
   }

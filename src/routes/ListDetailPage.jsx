@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { useShoppingLists } from "../contexts/ShoppingListsContext.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 // components
 import ListHeader from "../components/ListHeader.jsx";
@@ -12,6 +13,9 @@ import ListTabs from "../components/ListTabs.jsx";
 import ItemList from "../components/ItemList.jsx";
 import ConfirmationDialog from "../components/ConfirmationDialog.jsx";
 import AddNewItemBtn from "../components/AddNewItemBtn.jsx";
+import ItemsPieChart from "../components/ItemsPieChart.jsx";
+import ThemeToggle from "../components/ThemeToggle.jsx";
+import LanguageToggle from "../components/LanguageToggle.jsx";
 
 function ListDetailPage() {
   const navigate = useNavigate();
@@ -29,6 +33,7 @@ function ListDetailPage() {
   } = useShoppingLists();
 
   const { currentUser } = useAuth();
+  const { t } = useLanguage();
 
   const { listId } = useParams();
   const list = useMemo(
@@ -88,7 +93,7 @@ function ListDetailPage() {
   if (!list) {
     return (
       <div className="p-4 text-center">
-        <p>List not found</p>
+        <p>{t("listNotFound")}</p>
       </div>
     );
   }
@@ -96,7 +101,7 @@ function ListDetailPage() {
   if (!canView) {
     return (
       <div className="p-4 text-center">
-        <p>Access Denied. You are not a member of this list.</p>
+        <p>{t("accessDenied")}</p>
       </div>
     );
   }
@@ -212,6 +217,10 @@ function ListDetailPage() {
 
   return (
     <div className="flex-col space-y-4 px-4 sm:px-6 md:px-8 max-w-2xl mx-auto">
+      <div className="flex items-center justify-end gap-2 mb-2">
+        <ThemeToggle />
+        <LanguageToggle />
+      </div>
       <div>
         <ListHeader
           name={list.name}
@@ -226,7 +235,10 @@ function ListDetailPage() {
         />
 
         {list.items.length > 0 && (
-          <ListTabs activeTab={activeTab} onTabChange={setActiveTab} />
+          <>
+            <ListTabs activeTab={activeTab} onTabChange={setActiveTab} />
+            <ItemsPieChart items={list.items} />
+          </>
         )}
 
         <ItemList
@@ -256,7 +268,7 @@ function ListDetailPage() {
       <ConfirmationDialog
         open={leaveDialog.open}
         actionType="remove"
-        title="Leave this list?"
+        title={t("leaveListConfirm")}
         onConfirm={handleConfirmLeave}
         onCancel={handleCloseLeaveDialog}
       />

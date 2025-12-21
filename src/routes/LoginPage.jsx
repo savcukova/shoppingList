@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext.jsx";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 function LoginPage() {
+  const { t } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -15,7 +17,7 @@ function LoginPage() {
 
     if (isRegister) {
       if (!email || !password || !name) {
-        alert("Please enter email, password, and name.");
+        alert(t("pleaseEnterEmailPasswordName"));
         return;
       }
 
@@ -25,7 +27,7 @@ function LoginPage() {
       }
     } else {
       if (!email || !password) {
-        alert("Please enter both email and password.");
+        alert(t("pleaseEnterEmailPassword"));
         return;
       }
 
@@ -39,7 +41,7 @@ function LoginPage() {
   return (
     <div className="p-4 sm:p-6 md:p-8 space-y-6 max-w-md mx-auto">
       <p className="text-xl sm:text-2xl font-bold">
-        {isRegister ? "Register" : "Login"}
+        {isRegister ? t("register") : t("login")}
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -51,7 +53,7 @@ function LoginPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="input input-bordered w-full text-sm sm:text-base"
-              placeholder="Name"
+              placeholder={t("name")}
               autoFocus
             />
           </div>
@@ -64,7 +66,7 @@ function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="input input-bordered w-full text-sm sm:text-base"
-            placeholder="Email"
+            placeholder={t("email")}
             autoFocus={!isRegister}
           />
         </div>
@@ -76,7 +78,7 @@ function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="input input-bordered w-full text-sm sm:text-base"
-            placeholder="Password"
+            placeholder={t("password")}
           />
         </div>
 
@@ -85,7 +87,7 @@ function LoginPage() {
             type="submit"
             className="btn btn-primary btn-sm sm:btn-md w-full"
           >
-            {isRegister ? "Register" : "Login"}
+            {isRegister ? t("register") : t("login")}
           </button>
 
           <button
@@ -99,8 +101,8 @@ function LoginPage() {
             className="btn btn-ghost btn-sm sm:btn-md w-full"
           >
             {isRegister
-              ? "Already have an account? Login"
-              : "Don't have an account? Register"}
+              ? t("alreadyHaveAccount")
+              : t("dontHaveAccount")}
           </button>
         </div>
       </form>

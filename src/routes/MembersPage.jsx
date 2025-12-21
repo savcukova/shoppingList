@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { useShoppingLists } from "../contexts/ShoppingListsContext.jsx";
 import { useAuth } from "../contexts/AuthContext.jsx";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -14,6 +15,7 @@ function MembersPage() {
   const navigate = useNavigate();
   const { lists, handleAddMember, handleRemoveMember } = useShoppingLists();
   const { currentUser } = useAuth();
+  const { t } = useLanguage();
 
   const { listId } = useParams();
   const list = useMemo(
@@ -40,7 +42,7 @@ function MembersPage() {
 
   const onAddMember = async () => {
     if (!email.trim()) {
-      alert("Please enter email");
+      alert(t("pleaseEnterEmail"));
       return;
     }
     try {
@@ -77,7 +79,7 @@ function MembersPage() {
   if (!list) {
     return (
       <div className="p-4 sm:p-6 md:p-8 text-center">
-        <p>List not found</p>
+        <p>{t("listNotFound")}</p>
       </div>
     );
   }
@@ -85,7 +87,7 @@ function MembersPage() {
   if (!canView) {
     return (
       <div className="p-4 sm:p-6 md:p-8 text-center">
-        <p>Access Denied. You are not a member of this list.</p>
+        <p>{t("accessDenied")}</p>
       </div>
     );
   }
@@ -105,7 +107,7 @@ function MembersPage() {
     <div className="flex-col space-y-4 px-4 sm:px-6 md:px-8 max-w-2xl mx-auto">
       <div>
         <ListHeader
-          name="List users"
+          name={t("listUsers")}
           onBack={() => navigate(`/shopping-lists/${listId}`)}
           isOwner={false}
         />

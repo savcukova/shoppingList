@@ -1,6 +1,9 @@
 import Member from "./Member.jsx";
+import { useLanguage } from "../contexts/LanguageContext.jsx";
 
 function MemberList({ members, onRemoveMember, isOwner, currentUserId }) {
+  const { t } = useLanguage();
+  
   // Owner vidí všechny členy včetně sebe, Member vidí jen "other users" (ne ownery)
   const displayedMembers = isOwner
     ? members
@@ -10,7 +13,7 @@ function MemberList({ members, onRemoveMember, isOwner, currentUserId }) {
     return (
       <div className="text-center py-10">
         <p className="text-gray-500 mb-4">
-          {isOwner ? "No members" : "No other users"}
+          {isOwner ? t("noMembers") : t("noOtherUsers")}
         </p>
       </div>
     );
