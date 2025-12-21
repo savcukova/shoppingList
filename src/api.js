@@ -1,4 +1,5 @@
-const useMockData = import.meta.env.VITE_USE_MOCK_DATA === "true";
+// Default to mock data if not explicitly set to false
+const useMockData = import.meta.env.VITE_USE_MOCK_DATA !== "false";
 
 if (useMockData) {
   console.log("Using MOCK data for server calls");
